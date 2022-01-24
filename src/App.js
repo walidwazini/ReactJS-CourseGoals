@@ -1,11 +1,30 @@
 import logo from './logo.svg';
 import './App.css';
+import React, { useState } from 'react';
 import {
   Container, Box, Input, Row,
   TextField, Card, CardContent, Button,
 } from '@mui/material';
 import GoalsList from './Components/GoalsList';
+
+const DUMMY_DATA = [
+  {
+    id: 'g1',
+    text: 'Do all exercises!',
+    date: new Date(2021, 0, 14),
+    deadline: new Date(2021, 0, 16),
+  },
+  {
+    id: 'g2',
+    text: 'Do all exercises!',
+    date: new Date(2021, 0, 17),
+    deadline: new Date(2021, 0, 20),
+  },
+]
+
 function App() {
+  const [goals, setGoals] = useState(DUMMY_DATA)
+
   return (
     <div className="App">
       <div className='row'
@@ -65,7 +84,7 @@ function App() {
               }}
             >
               <p
-                style={{ fontSize: 22, }}
+                style={{ fontSize: 22, fontWeight: 'bold' }}
               >Enter your goals</p>
               <TextField
                 id='outlined-required'
@@ -93,12 +112,11 @@ function App() {
                   }}
                 >Submit
                 </Button>
-
               </div>
             </CardContent>
           </Card>
         </div>
-        <GoalsList />
+        <GoalsList items={goals} />
 
 
         {/* <Input
