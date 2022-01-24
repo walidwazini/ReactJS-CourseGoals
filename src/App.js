@@ -4,6 +4,7 @@ import {
   Container, Box, Input, Row,
   TextField, Card, CardContent, Button,
 } from '@mui/material';
+import GoalsList from './Components/GoalsList';
 function App() {
   return (
     <div className="App">
@@ -94,10 +95,10 @@ function App() {
                 </Button>
 
               </div>
-
             </CardContent>
           </Card>
         </div>
+        <GoalsList />
 
 
         {/* <Input
