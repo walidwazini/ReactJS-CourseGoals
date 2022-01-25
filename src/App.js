@@ -2,10 +2,11 @@ import logo from './logo.svg';
 import './App.css';
 import React, { useState } from 'react';
 import {
-  Container, Box, Input, Row,
-  TextField, Card, CardContent, Button,
+  Container,
 } from '@mui/material';
 import GoalsList from './Components/GoalsList';
+import Extra from './Components/Extra';
+import GoalForm from './Components/GoalForm';
 
 const DUMMY_DATA = [
   {
@@ -22,27 +23,64 @@ const DUMMY_DATA = [
   },
 ]
 
-function App() {
+const headerBar = (<>
+  <img src={logo} className="App-logo"
+    alt="logo" style={{ height: '70px' }}
+  />
+  <p style={{ fontWeight: 'bold', color: 'white' }} >
+    Course Goals
+  </p>
+</>)
+
+const header_bar_style = {
+  display: 'flex',
+  flexDirection: 'row',
+  // backgroundColor: 'red',
+  justifyContent: 'center',
+  alignItems: 'center',
+  backgroundColor: '202c44',
+}
+
+const reactLogo = logo
+
+// ___________________________ App() __________
+
+const App = () => {
   const [goals, setGoals] = useState(DUMMY_DATA)
+  const addGoalHandler = (newGoal) => {
+    setGoals(prevGoals => {
+      return [newGoal, ...prevGoals]
+    })
+    console.log(goals)
+  }
+
+  const addGoalHandlerCancel = (enteredText, enteredDate) => {
+    setGoals(allPrevGoals => {
+      const updatedGoals = [...allPrevGoals]
+      updatedGoals.unshift({
+        id: Math.random().toString(),
+        text: enteredText,
+        date: new Date(),
+        deadline: new Date(enteredDate)
+      })
+    })
+  }
+
+  const deleteHandler = goalId => {
+    setGoals(prevGoals => {
+      const updatedGoals = prevGoals.filter(goalToDelete => (
+        goalToDelete.id !== goalId
+      ))
+    })
+  }
+
 
   return (
     <div className="App">
-      <div className='row'
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          // backgroundColor: 'red',
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: '202c44',
-        }}
+      <div id='headerBar'
+        style={header_bar_style}
       >
-        <img src={logo} className="App-logo"
-          alt="logo" style={{ height: '70px' }}
-        />
-        <p style={{ fontWeight: 'bold', color: 'white' }} >
-          Course Goals
-        </p>
+        {headerBar}
       </div>
       <Container maxWidth='xl'
         sx={{
@@ -66,64 +104,10 @@ function App() {
           flexDirection: 'row',
           justifyContent: 'center',
         }} >
-          <Card
-            // component='form'
-            sx={{
-              mt: 1,
-              boxShadow: '2px black',
-              minWidth: 275,
-              width: '500px'
-              // alignItems: 'center',
-              // height: '200px',
-            }}
-          >
-            <CardContent
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-              }}
-            >
-              <p
-                style={{ fontSize: 22, fontWeight: 'bold' }}
-              >Enter your goals</p>
-              <TextField
-                id='outlined-required'
-                label='Your Goal'
-                size='small'
-                sx={{
-                  backgroundColor: 'whitesmoke',
-                  border: 'none',
-                  borderColor: 'transparent',
-                  borderRadius: '13px',
-                  mb: 3,
-                }}
-              />
-              <div
-                style={{
-                  display: 'flex', flexDirection: 'row',
-                  justifyContent: 'center'
-                }}
-              >
-                <Button
-                  variant="contained"
-                  sx={{
-                    backgroundColor: '#101b7c',
-                    width: '200px'
-                  }}
-                >Submit
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+          <Extra image={reactLogo} />
+          <GoalForm onAddGoal={addGoalHandler} />
         </div>
         <GoalsList items={goals} />
-
-
-        {/* <Input
-          size='small'
-          sx={{
-            backgroundColor: 'white'
-          }} /> */}
       </Container>
     </div>
   );
